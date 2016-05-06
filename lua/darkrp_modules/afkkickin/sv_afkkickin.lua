@@ -10,7 +10,6 @@ function AFKKickinAFK(ply, afkbool)
 	end
 	if !afkbool then
 		if !ply:getDarkRPVar("AFK") then
-			print("REMOVING FROM AFK TABLE!")
 			AFKKickintab[ply] = nil
 		end
 	end
@@ -23,23 +22,18 @@ hook.Add("playerSetAFK", "AFKKickinAFK", AFKKickinAFK)
 function AFKConnecting()
 	local playertokick = nil
 	if (#player.GetAll()) + AFKKickinMinOpenSlots >= game.MaxPlayers() then
-	--print(AFKKickintab[1])
-	print("Should Be Kicking A Fool")
 		for v,k in pairs(AFKKickintab) do
 			if !v:IsValid() then
 				AFKKickintab[v] = nil
 			end
 		end
-		--table.SortByKey(AFKKickintab, true)
 		for v,k in pairs(AFKKickintab) do
 			if AFKKickintab[v] + AFKKickinGracePeriod <= CurTime()  then
 				if !playertokick then
 					playertokick = v
-					print(playertokick)
 				else
 					if AFKKickintab[playertokick] <= AFKKickintab[v] then
 						playertokick = v
-						print(playertokick)
 					end
 				end
 			end
