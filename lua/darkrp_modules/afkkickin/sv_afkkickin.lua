@@ -5,10 +5,8 @@ AFKKickinKickMessage = "You have been kicked for being afk the longest in order 
 
 function AFKKickinAFK(ply, afkbool)
 	if afkbool then
-		table.Add(AFKKickintab, ply)
 		AFKKickintab[ply] = CurTime()
-	end
-	if !afkbool then
+	else
 		if !ply:getDarkRPVar("AFK") then
 			AFKKickintab[ply] = nil
 		end
@@ -22,12 +20,13 @@ hook.Add("playerSetAFK", "AFKKickinAFK", AFKKickinAFK)
 function AFKConnecting()
 	local playertokick = nil
 	if (#player.GetAll()) + AFKKickinMinOpenSlots >= game.MaxPlayers() then
+		
 		for v,k in pairs(AFKKickintab) do
-			if !v:IsValid() then
-				AFKKickintab[v] = nil
+			
+			if ( not v:IsValid() ) then
+				continue
 			end
-		end
-		for v,k in pairs(AFKKickintab) do
+			
 			if AFKKickintab[v] + AFKKickinGracePeriod <= CurTime()  then
 				if !playertokick then
 					playertokick = v
@@ -38,7 +37,8 @@ function AFKConnecting()
 				end
 			end
 		end
-		if playertokick then
+		
+		if ( playertokick ) then
 			playertokick:Kick(AFKKickinKickMessage)
 		end
 	end
