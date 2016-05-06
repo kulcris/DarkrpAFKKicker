@@ -24,6 +24,7 @@ function AFKConnecting()
 		for v,k in pairs(AFKKickintab) do
 			
 			if ( not v:IsValid() ) then
+				AFKKickintab[v] = nil 
 				continue
 			end
 			
